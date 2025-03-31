@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchRecipes, selectNewRecipeAdded } from "../redux/slices/RecipeSlice";  
 import { useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react";  // Like icon ke liye
 
 const Recipes = () => {
   const dispatch = useDispatch();
@@ -9,7 +11,6 @@ const Recipes = () => {
   
   const { recipes, status, error } = useSelector((state) => state.recipes);
   
-  // Get current user, either from Redux or from localStorage
   const currentUser = useSelector((state) => state.user) || JSON.parse(localStorage.getItem('user'));
 
   console.log('Current User:', currentUser);
@@ -22,7 +23,15 @@ const Recipes = () => {
     }
   }, [dispatch, newRecipeAdded]); 
 
-  // Filter recipes to show only those from the current user
+  const [likedRecipes, setLikedRecipes] = useState({});
+
+  const toggleLike = (recipeId) => {
+    setLikedRecipes((prev) => ({
+      ...prev,
+      [recipeId]: !prev[recipeId],
+    }));
+  };
+
   const filteredRecipes = recipes.filter(recipe => recipe.userId === currentUser._id);
 
   return (
@@ -52,6 +61,17 @@ const Recipes = () => {
               >
                 View
               </button>
+
+              {/* Like Button */}
+              <button
+                onClick={() => toggleLike(recipe._id)}
+                className="absolute top-2 right-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+              >
+                <Heart
+                  className={`w-6 h-6 ${likedRecipes[recipe._id] ? "text-red-500 fill-red-500" : "text-gray-500"}`}
+                />
+              </button>
+
             </div>
           ))
         )}

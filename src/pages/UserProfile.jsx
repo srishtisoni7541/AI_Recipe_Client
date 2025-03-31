@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaUtensils, FaBookmark, FaHeart, FaCog, FaSignOutAlt } from "react-icons/fa";
 import API from "../utils/axios";
-import { useNavigate } from "react-router-dom";  // For navigation after logout
+import { useNavigate } from "react-router-dom";  
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
