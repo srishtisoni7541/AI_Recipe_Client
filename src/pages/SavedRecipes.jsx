@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import API from "../utils/axios"; // Assuming you are using axios for API calls
+import API from "../utils/axios"; 
 
 const SavedRecipes = ({ likedRecipes }) => {
   const [fullRecipes, setFullRecipes] = useState([]);
