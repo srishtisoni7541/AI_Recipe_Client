@@ -16,7 +16,14 @@ const Home = () => {
       const response = await API.get("/recipes/getAllRecipes");
       setRecipes(response.data.data);
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      // If token is invalid or expired, handle 401/403 error
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        // Token invalid or expired, remove token and redirect to login
+        localStorage.removeItem('token');
+        navigate('/login'); 
+      } else {
+        console.error("Error fetching recipes:", error);
+      }
     }
   };
 

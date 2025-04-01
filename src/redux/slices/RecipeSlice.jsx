@@ -63,7 +63,6 @@ export const fetchRecipes = () => async (dispatch) => {
 export const addRecipe = (newRecipe) => async (dispatch, getState) => {
     try {
       const response = await API.post("/recipes/save", newRecipe);
-      console.log('Response from API:', response.data); // Check the response here
   
       if (!response.data) {
         console.error("No data returned from API.");

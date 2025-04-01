@@ -29,49 +29,6 @@ const RecipeGenerator = ({ onSaveRecipe }) => {
     setIngredients(e.target.value.split(",").map(ingredient => ingredient.trim()));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  
-  //   if (!ingredients.length || !cuisine) {
-  //     alert("Please provide ingredients and cuisine.");
-  //     return;
-  //   }
-  
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await API.post("/recipes/generate", {
-  //       ingredients,
-  //       cuisine,
-  //       preferences,
-  //     });
-  
-  //     console.log("Recipe Data:", data);
-  
-  //     // Sanitize the recipe data
-  //     const sanitizedData = {
-  //       ...data,
-  //       title: DOMPurify.sanitize(data.title),
-  //       // Convert ingredients object to an array and sanitize each ingredient
-  //       ingredients: Object.entries(data.ingredients).map(([ingredient, amount]) => 
-  //         DOMPurify.sanitize(`${ingredient}: ${amount}`)
-  //       ),
-  //       // Sanitize instructions
-  //       instructions: data.instructions.map((step) => DOMPurify.sanitize(step)),
-  //     };
-  
-  //     setGeneratedRecipe(sanitizedData);
-  //   } catch (error) {
-  //     console.error("Error generating recipe:", error);
-  //     alert(`Failed to generate recipe! ${error.message || ''}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  
-  
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!ingredients.length || !cuisine) {

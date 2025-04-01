@@ -5,7 +5,8 @@ import { fetchRecipes, selectNewRecipeAdded } from "../redux/slices/RecipeSlice"
 import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";  
 import API from "../utils/axios";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Recipes = () => {
   const dispatch = useDispatch();
@@ -15,21 +16,17 @@ const Recipes = () => {
 
   const currentUser = useSelector((state) => state.user) || JSON.parse(localStorage.getItem('user'));
 
-  console.log('Current User:', currentUser);
-
   const newRecipeAdded = useSelector(selectNewRecipeAdded);
 
   useEffect(() => {
     if (newRecipeAdded) {
       dispatch(fetchRecipes());
     }
-  }, [dispatch, newRecipeAdded]);
+  }, [newRecipeAdded]);
 
   const [likedRecipes, setLikedRecipes] = useState({});
 
   const toggleLike = async (recipeId) => {
-    console.log(recipeId
-    )
     setLikedRecipes((prev) => ({
       ...prev,
       [recipeId]: !prev[recipeId],
@@ -39,16 +36,16 @@ const Recipes = () => {
       const response = await API.post(`/recipes/likeRecipes/${recipeId}`); 
 
       if (response.status === 200) {
-        console.log(response.data.message); // You can show a success toast or message here
+        toast.success("Recipe liked successfully! check your profile ."); // Success toast
       }
     } catch (error) {
       console.error("Error liking the recipe:", error);
-      // Optionally, you can revert the like state if the request fails
+      toast.error("Failed to like the recipe."); // Error toast
+      
       setLikedRecipes((prev) => ({
         ...prev,
         [recipeId]: !prev[recipeId],
       }));
-      // Show an error toast or message
     }
   };
 
@@ -56,6 +53,8 @@ const Recipes = () => {
 
   return (
     <div className="p-6">
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick pauseOnHover />
+      
       <h2 className="text-3xl font-bold mb-4 text-center">🍽️ Your Recipes</h2>
 
       {status === "loading" && <p className="text-center">Loading...</p>}
@@ -84,7 +83,7 @@ const Recipes = () => {
 
               {/* Like Button */}
               <button
-                onClick={() => toggleLike(recipe._id)} // Call the toggleLike function when clicked
+                onClick={() => toggleLike(recipe._id)}
                 className="absolute top-2 right-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
               >
                 <Heart
@@ -100,4 +99,3 @@ const Recipes = () => {
 };
 
 export default Recipes;
-
