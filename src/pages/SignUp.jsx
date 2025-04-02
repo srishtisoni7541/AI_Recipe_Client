@@ -18,14 +18,15 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); 
+          console.log("API BASE URL:", import.meta.env.VITE_API_URL); 
 
     try {
-      const response = await API.post("/auth/register", formData); // Backend call
-      console.log(response.data);
+      const response = await API.post("/auth/register", formData);
+      // console.log(response.data);
 
       const userData = response.data.user; 
       const token = response.data.user.accessToken; 
-      console.log(token);
+      // console.log(token);
 
       localStorage.setItem("token", token); 
       

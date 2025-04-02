@@ -1,9 +1,12 @@
 import axios from 'axios';
+console.log("API BASE URL:", import.meta.env.VITE_API_URL); 
 
 const API = axios.create({
-  baseURL: 'http://localhost:4000/api', 
+  baseURL: import.meta.env.VITE_API_URL || "https://ai-recipe-backend-1.onrender.com/api", 
   withCredentials: true, 
-  "Cache-Control": "no-cache",
+  headers: {
+    "Cache-Control": "no-cache",
+  },
 });
 
 // Request Interceptor
@@ -21,6 +24,7 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use((response) => {
   return response;
 }, (error) => {
+  console.log(error)
   console.error('API Error:', error.response?.data?.message || error.message);
   return Promise.reject(error);
 });

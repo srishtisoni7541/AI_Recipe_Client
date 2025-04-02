@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../utils/axios";
@@ -12,8 +11,10 @@ const RecipeDetail = () => {
 
   useEffect(() => {
     const fetchRecipe = async () => {
+
       try {
         const response = await API.get(`/recipes/getRecipeById/${id}`);
+        // console.log(response);
         setRecipe(response.data.data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -38,7 +39,11 @@ const RecipeDetail = () => {
   };
 
   if (!recipe) {
-    return <p className="text-center text-gray-500 text-lg animate-pulse">Loading recipe...</p>;
+    return (
+      <p className="text-center text-gray-500 text-lg animate-pulse">
+        Loading recipe...
+      </p>
+    );
   }
 
   return (
@@ -57,12 +62,20 @@ const RecipeDetail = () => {
             onClick={handleDelete}
             disabled={loading}
           >
-            {loading ? <Loader className="animate-spin" size={24} /> : <Trash2 size={24} />}
+            {loading ? (
+              <Loader className="animate-spin" size={24} />
+            ) : (
+              <Trash2 size={24} />
+            )}
           </button>
         </div>
 
-        <h2 className="text-4xl font-extrabold text-center text-blue-400 mb-4">{recipe.title}</h2>
-        <h3 className="text-2xl font-semibold mt-4 text-gray-700 border-b pb-2 border-gray-300">🛒 Ingredients</h3>
+        <h2 className="text-4xl font-extrabold text-center text-blue-400 mb-4">
+          {recipe.title}
+        </h2>
+        <h3 className="text-2xl font-semibold mt-4 text-gray-700 border-b pb-2 border-gray-300">
+          🛒 Ingredients
+        </h3>
         <ul className="list-disc pl-6 text-lg text-gray-600 space-y-2 mt-2">
           {recipe.ingredients.map((ingredientObj, index) => (
             <li key={index} className="mb-2">
@@ -73,7 +86,9 @@ const RecipeDetail = () => {
                       <strong className="text-gray-800">{key}:</strong>
                       <ul className="list-disc pl-4 text-gray-600">
                         {Object.entries(value).map(([subKey, subValue]) => (
-                          <li key={subKey}>{subKey}: {subValue}</li>
+                          <li key={subKey}>
+                            {subKey}: {JSON.stringify(subValue)}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -88,10 +103,14 @@ const RecipeDetail = () => {
           ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-6 text-gray-700 border-b pb-2 border-gray-300">📜 Instructions</h3>
+        <h3 className="text-2xl font-semibold mt-6 text-gray-700 border-b pb-2 border-gray-300">
+          📜 Instructions
+        </h3>
         <ul className="list-decimal pl-6 text-lg text-gray-600 space-y-2 mt-2">
           {(recipe.instructions || []).map((step, index) => (
-            <li key={index} className="mb-2">{step}</li>
+            <li key={index} className="mb-2">
+              {step}
+            </li>
           ))}
         </ul>
       </div>
@@ -99,4 +118,4 @@ const RecipeDetail = () => {
   );
 };
 
-export default RecipeDetail;  
+export default RecipeDetail;
