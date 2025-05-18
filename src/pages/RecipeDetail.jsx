@@ -181,4 +181,3 @@ const RecipeDetail = () => {
 
 export default RecipeDetail;
 
-export default RecipeDetail;
