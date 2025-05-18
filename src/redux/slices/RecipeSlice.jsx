@@ -1,7 +1,4 @@
 
-
-
-
 // RecipeSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
@@ -61,27 +58,27 @@ export const fetchRecipes = () => async (dispatch) => {
 };
 
 export const addRecipe = (newRecipe) => async (dispatch, getState) => {
-    try {
-      const response = await API.post("/recipes/save", newRecipe);
-  
-      if (!response.data) {
-        console.error("No data returned from API.");
-        return;
-      }
-  
-      // Update the state with the new recipe
-      const currentRecipes = getState().recipes.recipes;
-      const updatedRecipes = [...currentRecipes, response.data]; // Adding the new recipe
-  
-      console.log('Updated Recipes:', updatedRecipes); // Check the updated state here
-  
-      dispatch(setRecipes(updatedRecipes)); // Dispatching the updated recipes list
-      dispatch(setNewRecipeAdded()); // Flag to indicate a new recipe is added
-  
-    } catch (error) {
-      console.error("Error while adding recipe:", error);
+  try {
+    const response = await API.post("/recipes/save", newRecipe);
+
+    if (!response.data) {
+      console.error("No data returned from API.");
+      return;
     }
-  };
-  
+
+    // ✅ Use safe fallback
+    const currentRecipes = getState().recipes?.recipes || [];
+    const updatedRecipes = [...currentRecipes, response.data];
+
+    console.log('Updated Recipes:', updatedRecipes);
+
+    dispatch(setRecipes(updatedRecipes));
+    dispatch(setNewRecipeAdded());
+
+  } catch (error) {
+    console.error("Error while adding recipe:", error);
+  }
+};
+
   
 export default recipeSlice.reducer;
